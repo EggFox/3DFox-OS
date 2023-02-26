@@ -1,0 +1,27 @@
+
+name: Build ZIP file
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Get version
+        run: OSVER=`cat version.txt`
+
+      - name: ZIP files
+        run: zip "3DFox_OS_EUR_$OSVER.zip" $GITHUB_WORKSPACE/*
+
+      - name: Upload ZIP file as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: 3DFox OS
+          path: ./3DFox_OS_EUR_${{ env.OSVER }}.zip
