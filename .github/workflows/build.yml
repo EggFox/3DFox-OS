@@ -3,9 +3,7 @@ name: Build ZIP file
 
 on:
   push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -22,9 +20,11 @@ jobs:
 
       - name: ZIP files
         run: zip "3DFox_OS_EUR_$OSVER.zip" ./ -r
+        if: ${{ github.ref_name == 'main' }}
 
       - name: Upload ZIP file as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: 3DFox OS
           path: ./3DFox_OS_EUR_${{ env.OSVER }}.zip
+        if: ${{ github.ref_name == 'main' }}
