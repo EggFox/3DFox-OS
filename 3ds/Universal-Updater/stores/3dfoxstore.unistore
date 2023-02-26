@@ -1,0 +1,45 @@
+{
+	"storeInfo": {
+		"url": "https://eggfox.github.io/3dfoxstore/unistore/3dfoxstore.unistore",
+		"file": "3dfoxstore.unistore",
+		"title": "3DFox Store",
+		"author": "3DFox OS Team",
+		"description": "3DFox OS Official Store",
+		"revision":33,
+		"sheet": "3dfoxstore.t3x",
+		"sheetURL": "https://eggfox.github.io/3dfoxstore/unistore/3dfoxstore.t3x",
+		"version": 3
+	},
+	"storeContent": [{
+		"Download 3DFox OS EUR": [{
+			"type": "downloadFile",
+			"file": "https://github.com/EggFox/3DFox-OS/releases/download/5.0b2/3DFox_OS_EUR_v5.0b2.zip",
+			"output": "sdmc:/3dfoxos/3dfoxstore/3DFox_OS_EUR_v5.0b2.zip",
+			"message": "Downloading 3DFox OS..."
+		}, {
+			"type": "extractFile",
+			"file": "/3dfoxos/3dfoxstore/3DFox_OS_EUR_v5.0b2.zip",
+			"input": "",
+			"output": "/",
+			"message": "Extracting from the zip..."
+		}, {
+			"type": "deleteFile",
+			"file": "sdmc:/3dfoxos/3dfoxstore/3DFox_OS_EUR_v5.0b2.zip",
+			"message": "Deleting zip file..."
+		}, {
+			"type": "deleteFile",
+			"file": "sdmc:/readme.txt",
+			"message": "Deleting file..."
+  		}],
+		"info": {
+			"title": "3DFox OS",
+			"version": "5.0b2",
+			"author": "EggFox",
+			"category": ["OS"],
+			"console": ["3DS"],
+			"icon_index":0,
+			"license": "Hemmm....",
+			"description": "Official 3DFox OS"
+		}
+	}]
+}
