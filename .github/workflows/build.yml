@@ -21,14 +21,18 @@ jobs:
 
       - name: ZIP files for stable release
         run: zip "3DFox_OS_EUR_$OSVER.zip" ./ -r
-        if: ${{ github.ref_name == 'main' }}
+        if: |
+          ${{ github.ref_name == 'main' }}
+          ${{ github.event_name == 'push' }}
 
       - name: Upload stable ZIP file as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: 3DFox OS
           path: ./3DFox_OS_EUR_${{ env.OSVER }}.zip
-        if: ${{ github.ref_name == 'main' }}
+        if: |
+          ${{ github.ref_name == 'main' }}
+          ${{ github.event_name == 'push' }}
         
       - name: ZIP files for nightly release
         run: zip "3DFox_OS_EUR_nightly.zip" ./ -r
@@ -52,7 +56,9 @@ jobs:
           SHORT_OSVER="$OSVER"
           SHORT_OSVER=`sed 's/[v]*//' <<< "$SHORT_OSVER"`
           echo "SHORT_OSVER=$SHORT_OSVER" >> $GITHUB_ENV
-        if: ${{ github.ref_name == 'main' }}
+        if: |
+          ${{ github.ref_name == 'main' }}
+          ${{ github.event_name == 'push' }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
@@ -61,4 +67,6 @@ jobs:
           generateReleaseNotes: true
           name: "!!!3DFox OS ${{ env.SHORT_OSVER }}!!!"
           tag: "${{ env.OSVER }}"
-        if: ${{ github.ref_name == 'main' }}
+        if: |
+          ${{ github.ref_name == 'main' }}
+          ${{ github.event_name == 'push' }}
