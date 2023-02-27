@@ -46,3 +46,19 @@ jobs:
           ${{ github.ref_name == 'dev' }} ||
           ${{ github.event_name == 'pull_request' }} ||
           ${{ github.event_name == 'schedule' }}
+
+      - name: Make short version tag
+        run: |
+          SHORT_OSVER="$OSVER"
+          SHORT_OSVER=`sed 's/[v]*//' <<< "$SHORT_OSVER"`
+          echo "SHORT_OSVER=$SHORT_OSVER" >> $GITHUB_ENV
+        if: ${{ github.ref_name == 'main' }}
+        
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "3DFox_OS_EUR_${{ env.OSVER }}.zip"
+          generateReleaseNotes: true
+          name: "!!!3DFox OS ${{ env.SHORT_OSVER }}!!!"
+          tag: "${{ env.OSVER }}"
+        if: ${{ github.ref_name == 'main' }}
