@@ -4,7 +4,8 @@ name: Build ZIP file
 on:
   push:
   pull_request:
-
+  schedule:
+    - cron: '0 0 * * 2'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,13 +19,30 @@ jobs:
           echo "OSVER=$OSVER" >> $GITHUB_ENV
           echo The current version is $OSVER!
 
-      - name: ZIP files
+      - name: ZIP files for stable release
         run: zip "3DFox_OS_EUR_$OSVER.zip" ./ -r
         if: ${{ github.ref_name == 'main' }}
 
-      - name: Upload ZIP file as an artifact
+      - name: Upload stable ZIP file as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: 3DFox OS
           path: ./3DFox_OS_EUR_${{ env.OSVER }}.zip
         if: ${{ github.ref_name == 'main' }}
+        
+      - name: ZIP files for nightly release
+        run: zip "3DFox_OS_EUR_nightly.zip" ./ -r
+        if: |
+          ${{ github.ref_name == 'dev' }} ||
+          ${{ github.event_name == 'pull_request' }} ||
+          ${{ github.event_name == 'schedule' }}
+
+      - name: Upload nightly ZIP file as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: 3DFox OS
+          path: ./3DFox_OS_EUR_nightly.zip
+        if: |
+          ${{ github.ref_name == 'dev' }} ||
+          ${{ github.event_name == 'pull_request' }} ||
+          ${{ github.event_name == 'schedule' }}
