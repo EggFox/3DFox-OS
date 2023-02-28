@@ -20,18 +20,28 @@ jobs:
           echo The current version is $OSVER!
 
       - name: ZIP files for stable release
-        run: zip "3DFox_OS_EUR_$OSVER.zip" ./ -r
+        run: |
+          cd $GITHUB_WORKSPACE/EUR/
+          zip "../3DFox_OS_EUR_$OSVER.zip" ./ -r
+          cd $GITHUB_WORKSPACE/USA/
+          zip "../3DFox_OS_USA_$OSVER.zip" ./ -r
+          cd $GITHUB_WORKSPACE
         if: (github.ref_name == 'main' && github.event_name == 'push')
 
       - name: Upload stable ZIP file as an artifact
         uses: actions/upload-artifact@v3
         with:
           name: 3DFox OS
-          path: ./3DFox_OS_EUR_${{ env.OSVER }}.zip
+          path: ./3DFox_OS_*_${{ env.OSVER }}.zip
         if: (github.ref_name == 'main' && github.event_name == 'push')
         
       - name: ZIP files for nightly release
-        run: zip "3DFox_OS_EUR_nightly.zip" ./ -r
+        run: zip |
+          cd $GITHUB_WORKSPACE/EUR/
+          "../3DFox_OS_EUR_nightly.zip" ./ -r
+          cd $GITHUB_WORKSPACE/USA/
+          "../3DFox_OS_USA_nightly.zip" ./ -r
+          cd $GITHUB_WORKSPACE
         if: |
           ${{ github.ref_name == 'dev' }} ||
           ${{ github.event_name == 'pull_request' }} ||
@@ -41,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 3DFox OS
-          path: ./3DFox_OS_EUR_nightly.zip
+          path: ./3DFox_OS_*_nightly.zip
         if: |
           ${{ github.ref_name == 'dev' }} ||
           ${{ github.event_name == 'pull_request' }} ||

@@ -1,0 +1,48 @@
+
+set PREVIEW_MODE "3DFox OS Installer\nby EggFox\n \nNotices:\nthe operating system is safe\nTo Install Press Install"
+
+@selwork
+labelsel "Scegli Una Opzione" lswork_*
+
+#########################-Install-##############################
+@lswork_Install
+set PREVIEW_MODE "3DFox OS Installer\nby EggFox\n \nNotices:\nInstalling System"
+if    not allow -a 1:
+        allow -a 0:
+        allow -a A:
+
+        echo "Permission denied"
+
+else
+
+install -o -s 0:/3dfoxos/apps/3hs.cia
+install -o -s 0:/3dfoxos/apps/universalupdater.cia
+install -o -s 0:/3dfoxos/apps/ghosteshop.cia
+install -o -s 0:/3dfoxos/apps/youtube.cia
+install -o -s 0:/3dfoxos/apps/ac.cia
+install -o -s 0:/3dfoxos/apps/fbi.cia
+install -o -s 0:/3dfoxos/apps/hb.cia
+install -o -s 0:/3dfoxos/apps/ane.cia
+
+end
+goto end
+#########################-RESTORE-##############################
+@lswork_Remove_Old_3DFoxOS(4.0)
+# Check if previously created home menu .app backup exists
+if not find $[GM9OUT]/originalhomemenu.app ORIGAPP
+  if not find 1:/rw/originalhomemenu.app ORIGAPP
+    echo "originalhomemenu.app not found! Error 0xRO3E\nCan't restore Menu Home!\nwww.3dfoxos.ga/Help/0xRO3E"
+    goto selwork
+  end
+end
+
+# If we ge to here, the file exists and we can restore it
+
+# find location of home menu .app to replace
+find $[MENUPATH]/*.app NEWAPP
+
+# Restore originalhomemenu.app to the correct location
+cp -w -n $[ORIGAPP] $[NEWAPP]
+goto end
+
+@end
