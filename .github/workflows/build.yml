@@ -36,7 +36,7 @@ jobs:
         if: (github.ref_name == 'main' && github.event_name == 'push')
         
       - name: ZIP files for nightly release
-        run: zip |
+        run: |
           cd $GITHUB_WORKSPACE/EUR/
           "../3DFox_OS_EUR_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE/USA/
