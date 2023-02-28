@@ -79,7 +79,7 @@ jobs:
         with: 
           path: 'api.json'
           prop_path: 'draft'
-        if: ${{ github.ref_name == 'main }}
+        if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
         run: |
