@@ -67,7 +67,7 @@ jobs:
       - name: Create a release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "3DFox_OS_EUR_${{ env.OSVER }}.zip"
+          artifacts: "3DFox_OS_EUR_${{ env.OSVER }}.zip,3DFox_OS_USA_${{ env.OSVER }}.zip"
           generateReleaseNotes: true
           name: "!!!3DFox OS ${{ env.SHORT_OSVER }}!!!"
           tag: "${{ env.OSVER }}"
