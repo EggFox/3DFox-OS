@@ -38,9 +38,9 @@ jobs:
       - name: ZIP files for nightly release
         run: |
           cd $GITHUB_WORKSPACE/EUR/
-          "$GITHUB_WORKSPACE/3DFox_OS_EUR_nightly.zip" ./ -r
+          zip "$GITHUB_WORKSPACE/3DFox_OS_EUR_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE/USA/
-          "$GITHUB_WORKSPACE/3DFox_OS_USA_nightly.zip" ./ -r
+          zip "$GITHUB_WORKSPACE/3DFox_OS_USA_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE
         if: |
           ${{ github.ref_name == 'dev' }} ||
