@@ -61,4 +61,9 @@ jobs:
           generateReleaseNotes: true
           name: "!!!3DFox OS ${{ env.SHORT_OSVER }}!!!"
           tag: "${{ env.OSVER }}"
+          draft: true
+          makeLatest: true
+          skipIfReleaseExists: true
+          allowUpdates: true
+          updateOnlyUnreleased: true
         if: (github.ref_name == 'main' && github.event_name == 'push')
