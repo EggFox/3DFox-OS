@@ -22,9 +22,9 @@ jobs:
       - name: ZIP files for stable release
         run: |
           cd $GITHUB_WORKSPACE/EUR/
-          zip "../3DFox_OS_EUR_$OSVER.zip" ./ -r
+          zip "$GITHUB_WORKSPACE/3DFox_OS_EUR_$OSVER.zip" ./ -r
           cd $GITHUB_WORKSPACE/USA/
-          zip "../3DFox_OS_USA_$OSVER.zip" ./ -r
+          zip "$GITHUB_WORKSPACE/3DFox_OS_USA_$OSVER.zip" ./ -r
           cd $GITHUB_WORKSPACE
         if: (github.ref_name == 'main' && github.event_name == 'push')
 
@@ -38,9 +38,9 @@ jobs:
       - name: ZIP files for nightly release
         run: |
           cd $GITHUB_WORKSPACE/EUR/
-          "../3DFox_OS_EUR_nightly.zip" ./ -r
+          "$GITHUB_WORKSPACE/3DFox_OS_EUR_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE/USA/
-          "../3DFox_OS_USA_nightly.zip" ./ -r
+          "$GITHUB_WORKSPACE/3DFox_OS_USA_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE
         if: |
           ${{ github.ref_name == 'dev' }} ||
