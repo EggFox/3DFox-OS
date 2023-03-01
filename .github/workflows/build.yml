@@ -6,6 +6,8 @@ on:
     - cron: '0 0 * * 2'
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  API_URL: 'https://api.github.com/repos/EggFox/3DFox-OS/releases/$OSVER'
+  JSON_TYPE: 'application/vnd.github+json'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -65,11 +67,7 @@ jobs:
         if: (github.ref_name == 'main' && github.event_name == 'push')
     
       - name: Get JSON
-        run: |
-          curl --request GET \
-          --url "http://api.github.com/repos/EggFox/3DFox-OS/releases/tags/${{ env.OSVER }}" \
-          --header "Authorization: Bearer ${{ secrets.api_token }}" \
-          --output api.json
+        run: curl -L -H "format('Accept{0} application/vnd.github+json', ':')" -H "format('Authorization{0} Bearer ${{ secrets.API_TOKEN }}', ':')" -H "format('X-GitHub-Api-Version{0} 2022-11-28', ':') ${{ env.API_URL }} -o api.json
         if: ${{ github.ref_name == 'main' }}
 
       - name: Set variable for 'draft' release
