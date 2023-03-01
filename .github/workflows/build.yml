@@ -76,8 +76,6 @@ jobs:
         run: |
           isdraft=$(jq '.draft' api.json)
           echo $isdraft
-          isdraft=$(sed 's/\"//g' <<< '$isdraft')
-          echo $isdraft
           echo "isdraft=$isdraft" >> $GITHUB_ENV
 
       - name: Tell draft release
