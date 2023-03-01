@@ -64,20 +64,17 @@ jobs:
           echo "SHORT_OSVER=$SHORT_OSVER" >> $GITHUB_ENV
         if: (github.ref_name == 'main' && github.event_name == 'push')
         
-      - name: Get JSON
-        run: |
-          curl --request GET \
-          --url "http://api.github.com/repos/EggFox/3DFox-OS/releases/tags/${{ env.OSVER }}" \
-          --header "Authorization: Bearer ${{ secrets.api_token }}" \
-          --output api.json
-        if: ${{ github.ref_name == 'main' }}
-      
-      - name: ga-project-version
-        id: release-draft
-        uses: euberdeveloper/ga-project-version@v2.0.1
+      - name: Get JSON Property
+        id: get-json
+        uses: notiz-dev/github-action-json-property@v0.2.0
         with:
-          path: api.json
-          version-prop: draft
+          path: 'api.json'
+          prop_path: 'draft'
+        if: ${{ github.ref_name == 'main' }}
+
+      - name: Tell draft release
+        run: echo "Draft is ${{ steps.get-json.outputs.prop }}!"
+        if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
         run: |
