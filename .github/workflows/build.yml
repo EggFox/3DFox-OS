@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * 2'
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  API_URL: 'https://api.github.com/repos/EggFox/3DFox-OS/releases/$OSVER'
+  API_URL: 'https://api.github.com/repos/EggFox/3DFox-OS/releases/${{ env.OSVER }}'
   JSON_TYPE: 'application/vnd.github+json'
 jobs:
   build:
