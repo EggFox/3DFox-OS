@@ -82,6 +82,7 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
           echo "apiJson=$content" >> $GITHUB_OUTPUT
+          echo "API=${{fromJson(steps.set_var.outputs.apiJson).draft}}" >> $GITHUB_ENV
         if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
@@ -89,7 +90,7 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ fromJson(steps.set_var.outputs.apiJson).draft == 'true'}}
+        if: ${{ env.API == 'true' }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
