@@ -71,13 +71,9 @@ jobs:
           --header "Authorization: Bearer ${{ secrets.api_token }}" \
           --output api.json
         if: ${{ github.ref_name == 'main' }}
-        
-      - name: Get version
-        id: version
-        uses: notiz-dev/github-action-json-property@release
-        with: 
-          path: 'api.json'
-          prop_path: 'draft'
+      
+      - name: Set variable 
+        run: echo "API_JSON=$(jq -c . < api.json)" >> $GITHUB_ENV
         if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
@@ -85,7 +81,7 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ steps.version.outputs.prop == 'true'}}
+        if: ${{ fromJson(env.API_JSON).draft == 'true' }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
