@@ -75,9 +75,9 @@ jobs:
       - name: Set variable for 'draft' release
         run: |
           content=$(cat api.json) 
-          isdraft=$( jq -r  'draft' <<< "${content}" ) 
-          echo ${isdraft}
-          echo "ISDRAFT=${isdraft}" >> $GITHUB_ENV
+          isdraft=$(echo '$content' | jq '.draft')
+          isdraft=$(sed 's/\"//g' <<< '$isdraft')
+          echo "isdraft=$isdraft" >> $GITHUB_ENV
 
       - name: Tell draft release
         run: echo "Draft is ${{ env.ISDRAFT }}!"
