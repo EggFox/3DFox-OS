@@ -71,17 +71,15 @@ jobs:
           --header "Authorization: Bearer ${{ secrets.api_token }}" \
           --output api.json
         if: ${{ github.ref_name == 'main' }}
-    
-      - name: Get JSON Property
-        id: get-json
-        uses: notiz-dev/github-action-json-property@v0.2.0
-        with:
-          path: './api.json'
-          prop_path: 'draft'
-        if: ${{ github.ref_name == 'main' }}
+
+      - name: Set variable for 'draft' release
+        run: |
+          content=$(cat api.json) 
+          isdraft=$( jq -r  '.draft' <<< "${content}" ) 
+          echo "ISDRAFT=${isdraft}" >> $GITHUB_ENV
 
       - name: Tell draft release
-        run: echo "Draft is ${{ steps.get-json.outputs.prop }}!"
+        run: echo "Draft is ${{ env.ISDRAFT }}!"
         if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
@@ -89,7 +87,7 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ steps.release-draft.outputs.version }}
+        if: ${{ env.ISDRAFT == 'true' }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
