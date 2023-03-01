@@ -76,6 +76,12 @@ jobs:
           echo $isdraft
           echo "isdraft=$isdraft" >> $GITHUB_ENV
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test
+          path: ./api.json
+
       - name: Tell draft release
         run: echo "Draft is ${{ env.isdraft }}!"
         if: ${{ github.ref_name == 'main' }}
