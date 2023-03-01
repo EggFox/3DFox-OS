@@ -67,7 +67,7 @@ jobs:
         if: (github.ref_name == 'main' && github.event_name == 'push')
     
       - name: Get JSON
-        run: curl -L -H "format('Accept{0} application/vnd.github+json', ':')" -H "format('Authorization{0} Bearer ${{ secrets.API_TOKEN }}', ':')" -H "format('X-GitHub-Api-Version{0} 2022-11-28', ':') ${{ env.API_URL }} -o api.json
+        run: curl -L -H "Accept:\ application/vnd.github+json"  -H "Authorization:\ Bearer ${{ secrets.API_TOKEN }}" -H "X-GitHub-Api-Version:\ 2022-11-28" $API_URL -o api.json
         if: ${{ github.ref_name == 'main' }}
 
       - name: Set variable for 'draft' release
