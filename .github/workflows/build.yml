@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Clone repository
         uses: actions/checkout@v3
 
@@ -65,7 +67,11 @@ jobs:
         if: (github.ref_name == 'main' && github.event_name == 'push')
         
       - name: Get JSON
-        run: curl --header "X-GitHub-Api-Version:2022-11-28" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/EggFox/3DFox-OS/releases/tags/${{ env.OSVER }} -k -o api.json
+        run: |
+          curl --request GET \
+          --url "http://api.github.com/repos/EggFox/3DFox-OS/releases/tags/${{ env.OSVER }}" \
+          --header "Authorization: Bearer ${{ secrets.api_token }}" \
+          --output api.json
         if: ${{ github.ref_name == 'main' }}
         
       - name: Get version
