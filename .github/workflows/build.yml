@@ -75,11 +75,13 @@ jobs:
       - name: Set variable for 'draft' release
         run: |
           isdraft=$(jq '.draft' api.json)
+          echo $isdraft
           isdraft=$(sed 's/\"//g' <<< '$isdraft')
+          echo $isdraft
           echo "isdraft=$isdraft" >> $GITHUB_ENV
 
       - name: Tell draft release
-        run: echo "Draft is ${{ env.ISDRAFT }}!"
+        run: echo "Draft is ${{ env.isdraft }}!"
         if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
@@ -87,7 +89,7 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ env.ISDRAFT == 'true' }}
+        if: ${{ env.isdraft == 'true' }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
