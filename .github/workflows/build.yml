@@ -72,25 +72,19 @@ jobs:
           --output api.json
         if: ${{ github.ref_name == 'main' }}
       
-      - name: Set variable
-        id: set_var
-        run: |
-          content=`cat ./api.json`
-          # the following lines are only required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          # end of optional handling for multi line json
-          echo "apiJson=$content" >> $GITHUB_OUTPUT
-          echo "API=${{fromJson(steps.set_var.outputs.apiJson).draft}}" >> $GITHUB_ENV
-        if: ${{ github.ref_name == 'main' }}
+      - name: ga-project-version
+        id: release-draft
+        uses: euberdeveloper/ga-project-version@v2.0.1
+        with:
+          path: api.json
+          version-prop: draft
           
       - name: Remove tag
         run: |
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ env.API == 'true' }}
+        if: ${{ steps.release-draft.outputs.version }}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
