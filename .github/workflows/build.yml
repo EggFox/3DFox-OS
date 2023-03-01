@@ -72,8 +72,16 @@ jobs:
           --output api.json
         if: ${{ github.ref_name == 'main' }}
       
-      - name: Set variable 
-        run: echo "API_JSON=$(jq -c . < api.json)" >> $GITHUB_ENV
+      - name: Set variable
+        id: set_var
+        run: |
+          content=`cat ./api.json`
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "apiJson=$content" >> $GITHUB_OUTPUT
         if: ${{ github.ref_name == 'main' }}
           
       - name: Remove tag
@@ -81,7 +89,7 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email github-actions[bot]@users.noreply.github.com
           git push --delete origin $OSVER
-        if: ${{ fromJson(env.API_JSON).draft == 'true' }}
+        if: ${{ fromJson(steps.set_var.outputs.apiJson).draft == 'true'}}
         
       - name: Create a release
         uses: ncipollo/release-action@v1
