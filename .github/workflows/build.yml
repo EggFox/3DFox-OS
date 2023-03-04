@@ -40,10 +40,10 @@ jobs:
           cd $GITHUB_WORKSPACE/USA/
           zip "$GITHUB_WORKSPACE/3DFox_OS_USA_nightly.zip" ./ -r
           cd $GITHUB_WORKSPACE
-        if: |
-          ${{ github.ref_name == 'dev' }} ||
-          ${{ github.event_name == 'pull_request' }} ||
-          ${{ github.event_name == 'schedule' }}
+        if:
+          github.ref_name != 'main' ||
+          github.event_name == 'pull_request' ||
+          github.event_name == 'schedule'
 
       - name: Upload nightly ZIP file as an artifact
         uses: actions/upload-artifact@v3
@@ -51,9 +51,9 @@ jobs:
           name: 3DFox OS
           path: ./3DFox_OS_*_nightly.zip
         if: |
-          ${{ github.ref_name == 'dev' }} ||
-          ${{ github.event_name == 'pull_request' }} ||
-          ${{ github.event_name == 'schedule' }}
+          github.ref_name != 'main' ||
+          github.event_name == 'pull_request' ||
+          github.event_name == 'schedule'
 
       - name: Make short version tag
         run: |
